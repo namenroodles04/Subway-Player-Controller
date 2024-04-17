@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class InputController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Controls controls;
+
+    private void Awake()
     {
-        
+        controls = new Controls();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        controls.Gameplay.Enable();
+        controls.Gameplay.Move.performed += OnMove;
     }
-}
+
+    private void OnMove(InputAction.CallbackContext context)
+    {
+        Vector2 moveInpout = context.ReadValue<Vector2>();
+        Debug.Log($"Move Input: {moveInput}");
+    }
