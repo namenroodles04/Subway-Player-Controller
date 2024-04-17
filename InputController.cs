@@ -22,3 +22,4 @@ public class InputController : MonoBehaviour
         Vector2 moveInpout = context.ReadValue<Vector2>();
         Debug.Log($"Move Input: {moveInput}");
     }
+}
