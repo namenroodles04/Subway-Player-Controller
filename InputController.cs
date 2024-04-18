@@ -1,10 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
+
+[Serializable]
+
+public class MoveInputEvent : UnityEvent<float, float> { }
 
 public class InputController : MonoBehaviour
 {
     Controls controls;
+    public MoveInputEvent moveInputEvent;
 
     private void Awake()
     {
@@ -14,12 +20,15 @@ public class InputController : MonoBehaviour
     private void OnEnable()
     {
         controls.Gameplay.Enable();
-        controls.Gameplay.Move.performed += OnMove;
+        controls.Gameplay.Move.performed += OnMovePerformed;
+        controls.Gameplay.Move.canceled += OnMovePerformed;
     }
 
-    private void OnMove(InputAction.CallbackContext context)
+    private void OnMovePerformed(InputAction.CallbackContext context)
     {
-        Vector2 moveInpout = context.ReadValue<Vector2>();
-        Debug.Log($"Move Input: {moveInput}");
+        Vector2 moveInput = context.ReadValue<Vector2>();
+        moveInputEvent.Invoke(moveInput.x, moveInput.y);
+        //Debug.Log($"Move Input: {moveInput}");
     }
 }
+
